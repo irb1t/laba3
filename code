@@ -1,0 +1,46 @@
+import numpy as np
+
+def create_matrix(N):
+    # Заполнение матрицы целыми числами в интервале [-10, 10]
+    return np.random.randint(-10, 11, size=(N, N))
+
+def check_conditions_and_swap(C):
+    # Проверка условий и обмен подматриц в соответствии с заданием
+    odd_rows_and_cols = C[::2, ::2]  # Выделение нечетных строк и столбцов в области 3
+    num_zeros = np.sum(odd_rows_and_cols == 0)  # Подсчет нулей
+    perimeter_product = np.prod([C[0,0], C[0,-1], C[-1,0], C[-1,-1]])  # Произведение по периметру области 2
+    
+    if num_zeros > perimeter_product:
+        # Транспонирование по главной диагонали (области 1 и 3 меняются местами)
+        C = np.where(np.eye(*C.shape, dtype=bool), C.T, C)
+    else:
+        # Обмен C и E (несимметрично)
+        # Здесь необходимо уточнение, как происходит несимметричный обмен, так как в исходных данных его описание отсутствует
+
+    return C
+
+# Заглушки для подматриц и основных операций, так как исходные данные недостаточны
+def perform_operations(K, A, F):
+    return (K * A).dot(A) - K * F
+
+# Заглушка для демонстрации примера
+N = 4  # Пример размера матрицы
+K = 2  # Пример множителя K
+
+# Создание подматриц B, C, D, E
+B = create_matrix(N // 2)
+C = create_matrix(N // 2)
+D = create_matrix(N // 2)
+E = create_matrix(N // 2)
+
+A = np.block([[D, E], [C, B]])  # Сборка матрицы A из подматриц
+F = check_conditions_and_swap(C)  # Выполнение преобразования для получения матрицы F
+result = perform_operations(K, A, F)  # Выполнение матричных операций
+
+# Вывод результатов
+print("Матрица A:")
+print(A)
+print("\nМатрица F:")
+print(F)
+print("\nРезультат операции (K*A) * A-K * F:")
+print(result)
